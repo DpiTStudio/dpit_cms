@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-4">Добро пожаловать на DPANGO 5</h1>
+        <p class="lead">Современный сайт на Django и Bootstrap</p>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-8">
+        <h2>Последние новости</h2>
+        <div class="row">
+            {% for item in news %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.title }}</h5>
+                        <p class="card-text">{{ item.content|safe|truncatewords:15 }}</p>
+                        <a href="{{ item.get_absolute_url }}" class="btn btn-primary">Читать далее</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="/news/" class="btn btn-outline-primary mt-3">Все новости</a>
+    </div>
+    <div class="col-md-4">
+        <h2>Наши работы</h2>
+        <div class="list-group">
+            {% for item in portfolio %}
+            <a href="{{ item.get_absolute_url }}" class="list-group-item list-group-item-action">
+                {{ item.title }}
+            </a>
+            {% endfor %}
+        </div>
+        <a href="/portfolio/" class="btn btn-outline-primary mt-3">Все работы</a>
+    </div>
+</div>
+{% endblock %}
