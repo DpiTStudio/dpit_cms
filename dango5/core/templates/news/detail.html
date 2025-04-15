@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ news_item.title }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/news/">Новости</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ news_item.title|truncatewords:5 }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<article class="news-detail">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <header class="mb-4">
+                <h1 class="fw-bold mb-3">{{ news_item.title }}</h1>
+                <div class="d-flex align-items-center text-muted mb-3">
+                    <span class="me-3">
+                        <i class="bi bi-calendar me-1"></i> 
+                        {{ news_item.published_date|date:"d.m.Y H:i" }}
+                    </span>
+                    {% if news_item.author %}
+                    <span>
+                        <i class="bi bi-person me-1"></i> 
+                        {{ news_item.author }}
+                    </span>
+                    {% endif %}
+                </div>
+                
+                {% if news_item.image %}
+                <img src="{{ news_item.image.url }}" 
+                     class="img-fluid rounded mb-4" 
+                     alt="{{ news_item.title }}"
+                     style="max-height: 400px; width: 100%; object-fit: cover;">
+                {% endif %}
+            </header>
+
+            <div class="news-content mb-5">
+                {{ news_item.content|safe }}
+            </div>
+
+            <div class="d-flex justify-content-between border-top pt-3">
+                <div>
+                    {% if news_item.get_previous_by_published_date %}
+                    <a href="{{ news_item.get_previous_by_published_date.get_absolute_url }}" 
+                       class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Предыдущая новость
+                    </a>
+                    {% endif %}
+                </div>
+                <div>
+                    <a href="/news/" class="btn btn-primary">
+                        Все новости
+                    </a>
+                </div>
+                <div>
+                    {% if news_item.get_next_by_published_date %}
+                    <a href="{{ news_item.get_next_by_published_date.get_absolute_url }}" 
+                       class="btn btn-outline-primary">
+                        Следующая новость <i class="bi bi-arrow-right"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+{% if similar_news %}
+<section class="similar-news mt-5 pt-5 border-top">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">Похожие новости</h3>
+        </div>
+        
+        {% for item in similar_news %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if item.image %}
+                <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}" style="height: 180px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.title }}</h5>
+                    <p class="card-text text-muted small">
+                        <i class="bi bi-calendar"></i> {{ item.published_date|date:"d.m.Y" }}
+                    </p>
+                    <a href="{{ item.get_absolute_url }}" class="btn btn-sm btn-primary">Читать</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<style>
+    .news-content img {
+        max-width: 100%;
+        height: auto;
+        margin: 1rem 0;
+        border-radius: 0.25rem;
+    }
+    
+    .news-content p, 
+    .news-content ul, 
+    .news-content ol {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+    
+    .news-content h2, 
+    .news-content h3, 
+    .news-content h4 {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}

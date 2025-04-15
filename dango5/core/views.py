@@ -1,6 +1,25 @@
 from django.shortcuts import render, get_object_or_404
 from .models import News, Portfolio, Page
 from django.core.paginator import Paginator
+from django.core.exceptions import FieldError
+
+def news_detail(request, slug):
+    news_item = get_object_or_404(News, slug=slug, is_published=True)
+    
+    # Получаем похожие новости (по дате публикации)
+    try:
+        similar_news = News.objects.filter(
+            is_published=True
+        ).exclude(
+            id=news_item.id
+        ).order_by('-published_date')[:3]
+    except FieldError:
+        similar_news = None
+    
+    return render(request, 'news/detail.html', {
+        'news_item': news_item,
+        'similar_news': similar_news
+    })
 
 def portfolio_list(request):
     portfolio_list = Portfolio.objects.filter(is_published=True).order_by('-created_date')
