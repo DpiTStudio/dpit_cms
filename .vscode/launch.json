@@ -14,17 +14,18 @@
             "django": true,
             "autoStartBrowser": true,
             "program": "${workspaceFolder}\\dango5\\manage.py"
-        },
-        {
-            "name": "Отладчик Python: Django",
-            "type": "debugpy",
-            "request": "launch",
-            "args": [
-                "runserver"
-            ],
-            "django": true,
-            "autoStartBrowser": true,
-            "program": "${workspaceFolder}\\dango5\\manage.py"
         }
+        // },
+        // {
+        //     "name": "Отладчик Python: Django",
+        //     "type": "debugpy",
+        //     "request": "launch",
+        //     "args": [
+        //         "runserver"
+        //     ],
+        //     "django": true,
+        //     "autoStartBrowser": true,
+        //     "program": "${workspaceFolder}\\dango5\\manage.py"
+        // }
     ]
 }
