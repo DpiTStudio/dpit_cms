@@ -12,7 +12,7 @@
                 "runserver"
             ],
             "django": true,
-            "autoStartBrowser": false,
+            "autoStartBrowser": true,
             "program": "${workspaceFolder}\\dango5\\manage.py"
         },
         {
@@ -23,7 +23,7 @@
                 "runserver"
             ],
             "django": true,
-            "autoStartBrowser": false,
+            "autoStartBrowser": true,
             "program": "${workspaceFolder}\\dango5\\manage.py"
         }
     ]
