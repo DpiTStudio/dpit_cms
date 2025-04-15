@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-4">Новости</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Новости</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    {% for item in news %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            {% if item.image %}
+            <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}" style="height: 200px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ item.title }}</h5>
+                <p class="card-text text-muted small">
+                    <i class="bi bi-calendar"></i> {{ item.published_date|date:"d.m.Y H:i" }}
+                </p>
+                <p class="card-text">{{ item.content|striptags|truncatewords:20 }}</p>
+                <a href="{{ item.get_absolute_url }}" class="btn btn-primary">Читать далее</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">Новости пока не добавлены.</div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if news.has_other_pages %}
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if news.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ news.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link" aria-hidden="true">&laquo;</span>
+        </li>
+        {% endif %}
+
+        {% for i in news.paginator.page_range %}
+        {% if news.number == i %}
+        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if news.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ news.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link" aria-hidden="true">&raquo;</span>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<style>
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
