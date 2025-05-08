@@ -1,0 +1,4 @@
+<h1>{{ article.title }}</h1>
+<p><em>{{ article.created_at }}</em></p>
+<div>{{ article.content|linebreaks }}</div>
+<a href="{% url 'article_list' %}">← Назад к статьям</a>

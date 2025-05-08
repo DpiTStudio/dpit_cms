@@ -1,6 +1,13 @@
 from django.contrib import admin
 from .models import News, Portfolio, Page
 from django.utils.safestring import mark_safe
+from .models import Article
+
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ("title", "created_at")
+    prepopulated_fields = {"slug": ("title",)}
+    search_fields = ("title", "content")
 
 class NewsAdmin(admin.ModelAdmin):
     list_display = ('title', 'published_date', 'is_published', 'get_image')

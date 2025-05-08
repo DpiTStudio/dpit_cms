@@ -1,7 +1,19 @@
 from django.shortcuts import render, get_object_or_404
-from .models import News, Portfolio, Page
+from .models import News, Portfolio, Page, Article
 from django.core.paginator import Paginator
 from django.core.exceptions import FieldError
+
+def home(request):
+    latest_articles = Article.objects.order_by("-created_at")[:3]  # последние 3 статьи
+    return render(request, "home.html", {"articles": latest_articles})
+
+def article_list(request):
+    articles = Article.objects.order_by("-created_at")
+    return render(request, "articles.html", {"articles": articles})
+
+def article_detail(request, slug):
+    article = get_object_or_404(Article, slug=slug)
+    return render(request, "detail.html", {"article": article})
 
 def news_detail(request, slug):
     news_item = get_object_or_404(News, slug=slug, is_published=True)
